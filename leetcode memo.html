@@ -1,0 +1,3036 @@
+<script>
+    //728. Self Dividing Numbers
+    var selfDividingNumbers = function(left, right) {
+        var arr = [];
+        for (var i = left; i <= right; i++) {
+            var string = "" + i;
+            var n = string.length;
+          for (var ir = 0; ir < n; ir++) {
+                var digit = +string.charAt(ir);
+                if (digit == 0) {
+                    break;
+                }
+                if (i % digit !== 0) {
+                    break;
+                }
+                if (ir == n - 1) {
+                    arr.push(i);
+                }
+            }
+        }
+        return arr;
+    }
+</script>
+
+<script>
+    //461. Counting Bits（普通解法）
+    function countingbits(n) {
+        var result = [];
+        for (var i = 0; i <= n; i++) {
+            var n_str = i.toString(2);
+            result.push(count1s(n_str));
+        }
+        return result;
+    }
+    function count1s(n_str) {
+        var count = 0;
+        for (var i = 0; i < n_str.length; i++) {
+            if (n_str[i] === "1") {
+                count++
+            }
+        }
+        return count;
+    }
+    //优化解法
+    var countBits = function(num) {
+    var result = new Array(num + 1);
+    result[0] = 0;
+    if (num === 0) {
+        return result;
+    }
+    var next_two_power = 1;
+    var prev_two_power;
+    for (var i = 1; i <= num; i++) {
+        if (i == next_two_power) {
+            result[i] = 1;
+            prev_two_power = next_two_power;
+            next_two_power *= 2;
+        } else {
+            result[i] = result[i - prev_two_power] + 1;
+        }
+    }
+    return result;
+    }
+</script>
+
+<script>
+    //231.Power of Two（普通解法）
+    function istwopower(n) {
+        if (n === 0) {
+            return false;
+        }
+        while (n > 1) {
+            n /= 2;
+        }
+        if (n === 1) {
+                return true;
+            }
+        return false;
+    }
+    //利用按位与运算
+    function istwopower(n) {
+        return (n > 0) && (n & (n - 1) === 0);
+    }
+</script>
+
+<script>
+    //342.Power of Four(利用按位与运算和魔法数字)
+    function isfourpower(n) {
+        return (n > 0) && (n & (n - 1) === 0) && (n & 715827882 === 0);
+    }
+</script>
+
+<script>
+    //326.Power of Three
+    function isthreepower(n) {
+        return (n > 0) && (1162261467 % n === 0);
+    }
+</script>
+
+<script>
+    //453. Minimum Moves to Equal Array Elements
+    var minMoves = function(nums) {
+        var count = 0;
+        var min = Infinity;
+        for (var i = 0; i < nums.length; i++) {
+            if (nums[i] < min) {
+                min = nums[i];
+            }
+        }
+        for (var i = 0; i < nums.length; i++) {
+            count += nums[i] - min;
+        }
+        return count;
+    }
+    //优化解法
+    var minMoves = function(nums) {
+        var min = Infinity;
+        var sum = 0;
+        for (var i = 0; i < nums.length; i++) {
+            if (nums[i] < min) {
+                min = nums[i];
+            }
+            sum += nums[i];
+        }
+        return sum - min * nums.length;
+    }
+</script>
+
+<script>
+    //461. Hamming Distance
+    function hammdist(x,y) {
+        var result = 0;
+        var XOR = x ^ y;
+        for (var i = 0; i < 32; i++) {
+            result += (XOR >> i) & 1;
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //136. Single Number
+    var singleNumber = function(nums) {
+    var result = 0;
+    for (var i = 0; i < nums.length; i++) {
+        result ^= nums[i];
+    }
+    return result;
+    }
+</script>
+
+<script>
+    //283. Move Zeroes
+    function movezeroes(array) {
+        for (var i = 0, j = 0; j < array.length; j++) {
+            if (array[j] !== 0) {
+                array[i] = array[j];
+                i++
+            }
+        }
+        for (;i < array.length; i++) {
+            array[i] = 0;
+        }
+        //return array(原地修改，不返回)
+    }
+</script>
+
+<script>
+    //35. Search Insert Position
+    var searchInsert = function(nums, target) {
+        if (nums.length === 0) {
+            return 0;
+        }
+        if (target < nums[0]) {
+            return 0;
+        }
+        if (target > nums[nums.length - 1]) {
+            return nums.length;
+        }
+        var left = 0;
+        var right = nums.length;
+        var mid;
+        while (left <= right) {
+            mid = (left + right) / 2 | 0;
+            if (nums[mid] === target) {
+                return mid;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        if (target === nums[left]) {
+            return left;
+        } else if (target < nums[left]) {
+            return left;
+        } else {
+            return left + 1;
+        }
+    }
+</script>
+
+<script>
+    //1. Two Sum（遍历写法）
+    var twoSum = function(nums, target) {
+        for (var i = 0; i < nums.length - 1; i++) {
+            for (var j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] === target && i !== j) {
+                    return [i,j]
+                }
+            }
+        }
+    }
+    //使用首尾查找
+    function twosum(nums, target) {
+        var l = 0;
+        var r = nums.length - 1;
+        while (l < r) {
+            if (nums[l] + nums[r] === target) {
+                return [l,r];
+            } else if (nums[l] + nums[r] > target) {
+                r--;
+            } else {
+                l++;
+            }
+        }
+    }
+    //使用对象保存数组，再映射
+    function twosum(nums, target) {
+        var map = {};//数组里的值映射到其下标
+        for (var i = 0; i < nums.length; i++) {
+            var t2 = target - nums[i];
+            if (t2 in map) {
+                return [map[t2],i];
+            } else {
+                map[nums[i]] = i;
+            }
+        }
+    }
+</script>
+
+<script>
+    //292. Nim Game
+    var canWinNim = function(n) {
+        if (n % 4 === 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+
+<script>
+    //657. Judge Route Circle
+    var judgeCircle = function(moves) {
+        var x = 0, y = 0;
+        for (var i = 0; i < moves.length; i++) {
+            if (moves[i] === "U") {
+                y++
+            }
+            if (moves[i] === "D") {
+                y--
+            }
+            if (moves[i] === "R") {
+                x++
+            }
+            if (moves[i] === "L") {
+                x--
+            }
+        }
+        if (x === 0 && y === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
+<script>
+    //268. Missing Number
+    var missingNumber = function(nums) {
+        //if (nums.length === 1 && nums[0] === 0) {
+        //    return 1;
+        //}
+        //if (nums.length === 1 && nums[0] === 1) {
+        //    return 0;
+        //}
+        var sum = 0;
+        var n = Number(nums.length);
+        for (var i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            }
+        return ((n + 1) * n) / 2 - sum
+    }
+</script>
+
+<script>
+    //442. Find All Duplicates in an Array(笨办法)
+    var findDuplicates = function(nums) {
+        var result = [];
+        var map = {};
+        for (var i = 0; i < nums.length; i++) {
+            if (nums[i] in map) {
+                result.push(nums[i]);
+            }
+            map[nums[i]] = i;
+        }
+        return result;
+    }
+    //匹配下标法
+    var findDuplicates = function(nums) {
+        var i = 0;
+        var result = [];
+        function swap(nums, i, j) {
+            if (i === j) {
+                return;
+            }
+            var temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+            
+        }
+        while (i < nums.length) {
+            if (nums[i] !== nums[nums[i] - 1]) {
+                swap(nums, i, nums[i] - 1);
+            } else {
+                i++
+            }
+        }
+        for (var j = 0; j < nums.length; j++) {
+            if (nums[j] !== j + 1) {
+                result.push(nums[j]);
+            }
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //66. Plus One
+    var plusOne = function(digits) {
+        var n = digits.length;
+        for (var i = n - 1; i >= 0; i--) {
+            if (digits[i] !== 9) {
+                digits[i]++
+                break;
+            } else {
+                digits[i] = 0;
+            }
+        }
+        if (digits[0] === 0) {
+            digits.unshift(1);
+            return digits;
+        }
+        return digits;
+    }
+</script>
+
+<script>
+    //50. Pow(x, n)
+    var myPow = function(x, n) {
+        var result = 1;
+        if (n === 0) {
+            return 1;
+        }
+        if (n > 0) {
+            for (var i = 0; i < n; i++){
+            result *= x;
+            }
+        return result;
+        }
+        if (n < 0) {
+            for (var j = 0; j < Math.abs(n); j++) {
+                result /= x;
+            }
+            return result;
+        }    
+    }
+    //优化做法
+    
+</script>
+
+<script>
+    //540. Single Element in a Sorted Array(同single number)
+    var singleNonDuplicate = function(nums) {
+        var result = 0;
+        for (var i = 0; i < nums.length; i++) {
+            result ^= nums[i];
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //167. Two Sum II - Input array is sorted（二分查找）
+    var twoSum = function(numbers, target) {
+        var result = new Array(2);
+        var left = 0;
+        var right = numbers.length - 1;
+        while (left < right) {
+            var sum = numbers[left] + numbers[right];
+            if (sum === target) {
+                result[0] = left + 1;
+                result[1] = right + 1;
+                break;
+            } else if (sum > target) {
+                right--;
+            } else {
+                left++;
+            }
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //217. Contains Duplicate（笨办法：循环O(N ^ 2）
+    var containsDuplicate = function(nums) {
+        for (var i = 0; i < nums.length - 1; i++) {
+            for (var j = i + 1; j < nums.length; j++) {
+                if (nums[i] === nums[j]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    //先用sort排序，再用循环O(N)
+    var containsDuplicate = function(nums) {
+        nums.sort(function (a, b) {
+            return a - b;
+        })
+        for (var i = 1; i < nums.length; i++) {
+            if (nums[i] === nums[i - 1]) {
+                return true;
+            }
+        }
+        return false;
+    }
+</script>
+
+<script>
+    //26. Remove Duplicates from Sorted Array（in-place,使用count++）
+    var removeDuplicates = function(nums) {
+        if (nums.length < 2) {
+            return nums.length;
+        }
+        var count = 1;
+        for (var i = 1; i < nums.length; i++) {
+            if (nums[i] !== nums[i - 1]) {
+                nums[count++] = nums[i]
+            }
+        }
+        return count;
+    }
+</script>
+
+<script>
+    //27. Remove Element(同上，in-place，使用++)
+    var removeElement = function(nums, val) {
+        var j = 0;
+        for (var i = 0; i < nums.length; i++) {
+            if (nums[i] === val) {
+                continue;
+            } else {
+                nums[j++] = nums[i]
+            }
+        }
+        return j;
+    }
+</script>
+
+<script>
+    //137. Single Number II（笨办法）
+    var singleNumber = function(nums) {
+        if (nums.length === 1) {
+            return nums[0];
+        }
+        nums.sort(function (a, b){
+            return a - b;
+        })
+        for (var i = 0; i < nums.length; i++) {
+            if (nums[i] !== nums[i - 1] && nums[i] !== nums[i + 1]) {
+                return nums[i];
+            }
+        }
+    }
+</script>
+
+<script>
+    //260. Single Number III（同上，笨办法）
+    var singleNumber = function(nums) {
+        var result = [];
+        nums.sort(function(a, b) {
+            return a - b;
+        })
+        for (var i = 0; i < nums.length; i++) {
+            if (nums[i] !== nums[i - 1] && nums[i] !== nums[i + 1]) {
+                result.push(nums[i]);
+            }
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //463. Island Perimeter
+    var islandPerimeter = function(grid) {
+        //if (grid = null || grid.length === 0 || grid[0].length === 0) {
+        //    return 0;
+        //}
+        var result = 0;
+        for (var i = 0; i < grid.length; i++) {
+            for (var j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] === 1) {
+                    result += 4;
+                    if (i > 0 && grid[i - 1][j] === 1) {
+                        result -= 2;
+                    }
+                    if (j > 0 && grid[i][j - 1] === 1) {
+                        result -= 2;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //53. Maximum Subarray（分治方法）
+    var maxsubarray = function(nums, start = 0, end = nums.length - 1) {
+        var start = 0;
+        var end = nums.length - 1;
+        var mid = parseInt((start + end) / 2);
+        var leftmax = maxsubarray(nums, start, mid);
+        var rightmax = maxsubarray(nums, mid + 1, end);
+        if (start === end) {
+            if (nums[start] >= 0) {
+                return nums[start];
+            } else {
+                return 0;
+            }
+        }
+        var leftsidemax = 0;
+        var i = mid;
+        var sum = 0;
+        while (i >= start) {
+            sum += nums[i]
+            if (sum > leftsidemax) {
+                leftsidemax = sum;
+            }
+            i--
+        }
+        var rightsidemax = 0;
+        var i = mid + 1;
+        var sum = 0;
+        while (i <= end) {
+            sum += nums[i]
+            if (sum > rightsidemax) {
+                rightsidemax = sum;
+            }
+            i++
+        }
+        var middlemax = leftsidemax + rightsidemax;
+        return Math.max(leftmax,middlemax,rightmax);
+    }
+    //遇负则弃
+    var maxSubArray = function(nums) {
+        var sum = 0;
+        var max = 0;
+        for (var i = 0; i < nums.length; i++) {
+            sum += nums[i] 
+            if (sum < 0) {
+                sum = 0;
+            }
+            if (sum > max) {
+                max = sum;
+            }
+        }
+        return max;
+    }
+</script>
+
+<script>
+    //74. Search a 2D Matrix
+    var searchMatrix = function(matrix, target) {
+        if (matrix.length === 0) {
+            return false;
+        }
+        var row = matrix.length;
+        var col = matrix[0].length;
+        var start = 0;
+        var end = row * col - 1;
+        var mid;
+        while (start <= end) {
+            mid = parseInt((start + end) / 2);
+            var mid_value = matrix[parseInt(mid / col)][mid % col];
+            if (mid_value === target) {
+                return true;
+            } else if (mid_value > target) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return false;
+    }
+</script>
+
+<script>
+    //191. Number of 1 Bits（同汉明距离，不断右移，& 1）
+    var hammingWeight = function(n) {
+        if (n === 0) {
+            return 0;
+        }
+        var result = 0;
+        for (var i = 0; i < 32; i++) {
+            result += (n >> i) & 1;
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //191.Reverse Bits(while循环)
+    var reverseBits = function(n) {
+        var result = 0;
+        var count = 32;
+
+        while (count--) {
+            result *= 2;
+            result += n & 1;
+            n = n >> 1;
+        }
+        return result;
+    }
+    //for循环
+    var reverseBits = function(n) {
+        var result = 0;
+        var count = 32;
+        for (;count > 0; count--) {
+            result *= 2;
+            result += n & 1;
+            n = n >> 1;
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //70. Climbing Stairs（动态规划）
+    var climbStairs = function(n) {
+        if (n < 2) {
+            return 1;
+        } 
+        if (n === 2) {
+            return 2;
+        }
+        var arr = [1,2]
+        for (var i = 2; i < n; i++) {
+            arr[i] = arr[i - 1] + arr[i - 2];
+        }
+        return arr[n - 1]
+    }
+    //差不多的写法
+    var climbStairs = function(n) {
+        const T = [0, 1, 2];
+        // T[i] = T[i - 1] + 2
+        for (let i = 3; i <= n; i += 1) {
+            T[i] = T[i - 1] + T[i - 2];
+        }
+        return T[n];    
+    }
+</script>
+
+<script>
+    //120. Triangle
+    function mininum(triangle) {
+        var i = triangle
+    }
+</script>
+
+<script>
+    //412. Fizz Buzz
+    var fizzBuzz = function(n) {
+        var result = [];
+        for (var i = 1; i <= n; i++) {
+            if (i % 15 === 0) {
+                result[i - 1] = "FizzBuzz";
+            } else if (i % 3 === 0) {
+                result[i - 1] = "Fizz";
+            } else if (i % 5 === 0) {
+                result[i - 1] = "Buzz";
+            } else {
+                result[i - 1] = "" + i;
+            }
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //50. Pow(x, n)
+    var myPow = function(x, n) {
+        if (n < 0) {
+            if (n % 2 === -0) {
+                var h = 1 / myPow(x, Math.abs(n) / 2);
+                return h * h;
+            } else {
+                var h = 1 / myPow(x, (Math.abs(n) - 1) / 2);
+                return h * h / x
+            }
+        }
+        if (n === 0) {
+            return 1;
+        }
+        if (n === 1) {
+            return x;
+        }
+        if (n % 2 === 0) {
+            var h = myPow(x, n / 2);
+            return h * h;
+        } else {
+            var h = myPow(x, (n - 1) / 2);
+            return h * h * x;
+        }
+    }
+</script>
+
+<script>
+    //202. Happy Number(创建数组showed缓存)
+    var showed = [];
+    var isHappy = function(n) {
+        var sum = 0;
+        while (n > 0) {
+            var digit = n % 10;
+            sum += digit * digit;
+            n = (n - digit) / 10;
+        }
+        if (sum === 1) {
+            showed.length = 0;
+            return true;
+        } else {
+            if (showed.indexOf(sum) >= 0) {
+                showed.length = 0;
+                return false;
+            }
+            showed.push(sum);
+            return isHappy(sum);
+        }
+    }
+    //第二种，把showed数组放进参数
+    function happyNumber(n, showed = []) {
+        var sum = 0
+        while(n > 0) {
+            var digit = n % 10
+            sum += digit * digit
+            n = (n - digit) / 10
+        }
+        if (sum === 1) {
+            return true
+        } else {
+            if (showed.indexOf(sum) >= 0) {
+            return false
+            }
+            showed.push(sum)
+            return happyNumber(sum, showed)
+        }
+    }
+    //第三种，内部闭包
+    function happyNumber(n) {
+        var showed = []
+        return happyNumber2(n)
+        function happyNumber2(n) {
+            var sum = 0
+            while(n > 0) {
+                var digit = n % 10
+                sum += digit * digit
+                n = (n - digit) / 10
+            }
+            if (sum === 1) {
+                return true
+            } else {
+                if (showed.indexOf(sum) >= 0) {
+                    return false
+            }
+            showed.push(sum)
+            return happyNumber2(sum)
+            }
+        }
+    }
+</script>
+
+<script>
+    //645. Set Mismatch
+    var findErrorNums = function(nums) {
+        var result = new Array(2);
+        nums.sort(function(a, b) {
+            return a - b;
+        })
+        for (var i = 1; i < nums.length; i++) {
+            if (nums[i] === nums[i - 1]) {
+                result[0] = nums[i]
+            }
+        }
+        var sum = 0;
+        var n = nums.length;
+        for (var j = 0; j < nums.length; j++) {
+            sum += nums[j];
+        }
+        result[1] = result[0] + ((n + 1) * n) / 2 -sum;
+        return result;
+    }
+</script>
+
+<script>
+    //682. Baseball Game
+    var sumnums = function(nums) {
+        var sum1 = 0;
+        for (var j = 0; j < nums.length; j++) {
+            sum1 += nums[j];
+        }
+        return sum1;
+    }
+    var calPoints = function(ops) {
+        var sum = 0;
+        var nums = [];
+        for (var i = 0; i < ops.length; i++) {
+            if (Number(ops[i])) {
+                nums.push(Number(ops[i]));
+            }
+            if (ops[i] === "+") {
+                if (nums.length === 1) {
+                    nums.push(nums[0] + sum);
+                } else {
+                    nums.push(nums[nums.length - 1] + nums[nums.length - 2]);
+                }
+            }
+            if (ops[i] === "D") {
+                nums.push(nums[nums.length - 1] * 2);
+            }
+            if (ops[i] === "C") {
+                nums.pop();
+            }
+        }
+        sum = sumnums(nums);
+        return sum;
+    }
+</script>
+
+<script>
+    //75. Sort Colors（笨办法）
+    var sortColors = function(nums) {
+        var count1 = 0;
+        var count2 = 0;
+        //var count3 = 0;
+        for (var i = 0; i < nums.length; i++) {
+            if (nums[i] === 0) {
+                count1++
+            }
+            if (nums[i] === 1) {
+                count2++
+            }
+            //if (nums[i] === 2) {
+            //    count3++
+            //}
+        }
+        for (var j = 0; j < count1; j++) {
+            nums[j] = 0;
+        }
+        for (var j = count1; j < count1 + count2; j++) {
+            nums[j] = 1;
+        }
+        for (var j = count1 + count2; j < nums.length; j++) {
+            nums[j] = 2;
+        }
+    }
+</script>
+
+<script>
+    //206. Reverse Linked List(递归写法)//返回倒序后的链表的头结点
+    var reverseList = function(head) {
+        if (!head || !head.next) {
+            return head;
+        }
+        var tail = head.next;
+        var newhead = reverseList(tail);
+        tail.next = head;
+        head.next = null;
+        return newhead;
+    }
+</script>
+
+<script>
+    //242. Valid Anagram(先转换成数组后排序，再转换成字符串)
+    var isAnagram = function(s, t) {
+        return s.split("").sort().toString() === t.split("").sort().toString();
+    }
+</script>
+
+<script>
+    //371. Sum of Two Integers
+    var getSum = function(a, b) {
+        return b==0? a:getSum(a^b, (a&b)<<1)
+    }
+</script>
+
+<script>
+    //389. Find the Difference（字符串异或）
+    var findTheDifference = function(s, t) {
+        var result = 0;
+        for (var i = 0; i < s.length; i++) {
+            result ^= s.charCodeAt(i);
+        }
+        for (var j = 0; j < t.length; j++) {
+            result ^= t.charCodeAt(j);
+        }
+        return String.fromCharCode(result);
+    }
+</script>
+
+<script>
+    //371. Sum of Two Integers
+    var getSum = function(a, b) {//使用异或求和，用左移进位
+        return b==0? a:getSum(a^b, (a&b)<<1)
+    }
+</script>
+
+<script>
+    //476. Number Complement
+    var findComplement = function(num) {
+        var string = num.toString(2);
+        var maxnum = 2 ** string.length - 1
+        return num ^ maxnum;
+    }
+</script>
+
+<script>
+    //189. Rotate Array(创建新数组)
+    var rotate = function(nums, k) {
+        var another = [];
+        for (var i = 0; i < nums.length; i++) {
+            another[(i + k) % nums.length] = nums[i];
+        }
+        for (var i = 0; i < nums.length; i++) {
+            nums[i] = another[i];
+        }
+    }
+</script>
+
+<script>
+    //141. Linked List Cycle
+    var hasCycle = function(head) {
+        if (!head) {
+            return false;
+        }
+        var p1 = head;
+        var p2 = head;
+        while (p2.next !== null && p2.next.next !== null) {
+            p1 = p1.next;
+            p2 = p2.next.next;
+            if (p1 === p2) {
+                return true;
+            }
+        }
+        return false;
+    }
+</script>
+
+<script>
+    //633. Sum of Square Numbers(二分法)
+    var judgeSquareSum = function(c) {
+        if (c === 0) {
+            return true;
+        }
+        if (c > 0) {
+            var left = 0;
+            var right = parseInt(Math.sqrt(c));
+            while (left <= right) {
+                var sum = left * left + right * right;
+                if (sum === c) {
+                    return true;
+                } else if (sum < c) {
+                    left++
+                } else {
+                    right --
+                }
+            }
+            return false;
+        }
+    }
+</script>
+
+<script>
+    //58. Length of Last Word
+    var lengthOfLastWord = function(s) {
+        var count = 0;
+        var tail = s.length - 1;
+        while (tail >= 0 && s[tail] === " ") {
+            tail--
+        }
+        while (tail >= 0 && s[tail] !== " ") {
+            tail--;
+            count++;
+        }
+        return count;
+    }
+</script>
+
+<script>
+    //226. Invert Binary Tree
+    var invertTree = function(root) {
+        if (!root) {
+            return null;
+        } else {
+            var temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+            invertTree(root.left);
+            invertTree(root.right);
+        }
+        return root;
+    }
+</script>
+
+<script>
+    //100. Same Tree
+    var isSameTree = function(p, q) {
+        if (!p && !q) {
+            return true;
+        }
+        if (p && !q) {
+            return false;
+        }
+        if (!p && q) {
+            return false;
+        }
+        if (p.val !== q.val) {
+            return false;
+        }
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+</script>
+
+<script>
+    //520. Detect Capital
+    var detectCapitalUse = function(word) {
+        if (word.length === 1) {
+            return true;
+        }
+        var result = word.split("");
+        var count = 0;
+        for (var i = 0; i < result.length; i++) {
+            if (result[i] === result[i].toUpperCase()) {
+                count++;
+            }
+        }
+        if (count === 0 || count === result.length) {
+            return true;
+        } else if (count === 1 && result[0] === result[0].toUpperCase()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
+<script>
+    //566. Reshape the Matrix（使用flatten和chunk函数）
+    var flattenDeep = function(array) {//展开数组（深层）
+        var result = [];
+        function flatten(array) {
+            for (var i = 0; i < array.length; i++) {
+                if (Array.isArray(array[i])) {
+                    flatten(array[i]);
+                } else {
+                    result.push(array[i]);
+                }
+            }
+            return result;
+        }
+        return flatten(array);
+    }
+    var matrixReshape = function(nums, r, c) {
+        if (r * c !== nums.length * nums[0].length) {
+            return nums;
+        }
+        var flattennums = flattenDeep(nums);
+        var result = [];
+        for (var i = 0; i < flattennums.length; i += c) {
+            result.push(flattennums.slice(i, i + c));
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //575. Distribute Candies（sort方法，还可以用set做）
+    var distributeCandies = function(candies) {
+        candies.sort(function(a, b) {
+            return a - b;
+        })
+        var count = 1;
+        for (var i = 1; i < candies.length; i++) {
+            if (candies[i] !== candies[i - 1]) {
+                count++
+            }
+        }
+        return Math.min(count, candies.length / 2);
+    }
+</script>
+
+<script>
+    //387. First Unique Character in a String
+    var firstUniqChar = function(s) {
+        var arr = s.split("").sort();
+        var result = [];
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] !== arr[i - 1] && arr[i] !== arr[i + 1]) {
+                result.push(arr[i]);
+            }
+        }
+        if (result.length === 0) {
+            return -1;
+        }
+        for (var j = 0; j < s.length; j++) {
+            if (result.includes(s[j])) {
+                return j;
+            }
+        }
+    }
+</script>
+
+<script>
+    //104. Maximum Depth of Binary Tree(递归)
+    var maxDepth = function(root) {
+        if (root === null) {
+            return 0;
+        }
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
+    //使用构造内部函数遍历法
+    var maxDepth = function(root) {
+        var maxDepth = 0;
+        function traverse(root, d = 0) {
+            if (d > maxDepth) {
+                maxDepth = d;
+            }
+            if (root) {
+                traverse(root.left, d + 1);
+                traverse(root.right, d + 1)
+            }
+            return maxDepth;
+        }
+        return traverse(root);
+    }
+</script>
+
+<script>
+    //144. Binary Tree Preorder Traversal（递归）
+    var preorderTraversal = function(root) {
+        var result = [];
+        if (root) {
+            result.push(root.val);
+            preorderTraversal(root.left);
+            preroderTraversal(root.right);
+        }
+        return result;
+    }
+    //迭代和栈
+    var preorderTraversal = function(root) {
+        if (!root) {
+            return [];
+        }
+        var result = [];
+        var stack = [root];
+        while (stack.length) {
+            var node = stack.pop();
+            result.push(node.val);
+            if (node.right) {
+                stack.push(node.right);
+            }
+            if (node.left) {
+                stack.push(node.left);
+            }
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //168. Excel Sheet Column Title
+    var convertToTitle = function(n) {
+        var a = "0ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        a = a.split('');
+        if (n <= 26) {
+            return a[n];
+        } else {
+            var temp = Math.ceil(n / 26) - 1;
+            return convertToTitle(temp) + convertToTitle(n - temp * 26)
+        }
+    }
+</script>
+
+<script>
+    //171. Excel Sheet Column Number
+    var titleToNumber = function(s) {
+        var a = "0ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        a = a.split("");
+        var sum = 0;
+        for (var i = s.length - 1; i >= 0; i--) {
+            sum += a.indexOf(s[i]) * 26 ** (s.length - i - 1);
+        }
+        return sum;
+    }
+</script>
+
+<script>
+    //101. Symmetric Tree(对称树)
+    var isSymmetric = function(root) {
+        if (!root) {
+            return true;
+        }
+        var checkbox = function(left, right) {
+            if (left === null && right === null) {
+                return true;
+            }
+            if (left === null || right === null) {
+                return left === right;
+            }
+            if (left.val === right.val) {
+                return checkbox(left.left, right.right) && checkbox(left.right, right.left);
+            }
+            return false;
+        }
+        return checkbox(root.left, root.right);
+    }
+</script>
+
+<script>
+    //500. Keyboard Row
+    var findWords = function(words) {
+        var row1 = ["Q","W","E","R","T","Y","U","I","O","P","q","w","e","r","t","y","u","i","o","p"];
+        var row2 = ["A","S","D","F","G","H","J","K","L","a","s","d","f","g","h","j","k","l"];
+        var row3 = ["Z","X","C","V","B","N","M","z","x","c","v","b","n","m"];
+        var result = [];
+        for (var i = 0; i < words.length; i++) {
+            var count1 = 0;
+            var count2 = 0;
+            var count3 = 0;
+            var word = words[i];
+            for (var j = 0; j < word.length; j++) {
+                if (row1.includes(word[j])) {
+                    count1++
+                }
+                if (row2.includes(word[j])) {
+                    count2++
+                }
+                if (row3.includes(word[j])) {
+                    count3++
+                }
+            }
+            if (count1 === words[i].length || count2 === words[i].length || count3 === words[i].length) {
+                result.push("" + words[i]);
+            }
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //111. Minimum Depth of Binary Tree
+    var minDepth = function(root) {
+        if (!root) {
+            return 0;
+        }
+        var L = minDepth(root.left);
+        var R = minDepth(root.right);
+        return (L === 0 || R === 0) ? L + R + 1 : Math.min(L, R) + 1;
+    }
+</script>
+
+<script>
+    //94. Binary Tree Inorder Traversal(赖皮法)
+    var inorderTraversal = function(root) {
+        var result = [];
+        var helper = function(node, result) {
+            if (!node) {
+                return;
+            }
+            helper(node.left, result);
+            result.push(node.val);
+            helper(node.right, result);
+        }
+        helper(root, result);
+        return result;
+    }
+</script>
+
+<script>
+    //145. Binary Tree Postorder Traversal（赖皮法）
+    var postorderTraversal = function(root) {
+        var result = [];
+        var helper = function(node, result) {
+            if (!node) {
+                return;
+            }
+            helper(node.left, result);
+            helper(node.right, result);
+            result.push(node.val);
+        }
+        helper(root, result);
+        return result;
+    }
+</script>
+
+<script>
+    //41. First Missing Positive（第一种方法，flag）
+    var firstMissingPositive = function(nums) {
+        if (nums.length === 0) {
+            return 1;
+        }
+        var flag = 1;
+        while (nums.indexOf(flag) !== -1) {
+            flag++
+        }
+        return flag;
+    }
+    //第二种方法，先排序筛选
+    var firstMissingPositive = function(nums) {
+        nums = nums.sort(function(a, b) {//先筛选正数
+            return a - b;
+        }).filter(function(a) {
+            return a > 0;
+        })
+        let i;
+        for (i = 0; i < nums.length; i++) {
+            if (nums[0] > 1) {
+                return 1;
+            }
+            if (nums[i + 1] - nums[i] > 1) {
+                return nums[i] + 1;
+            }
+        }
+        return nums[i - 1] + 1 || 1//空数组的情况;
+    }
+</script>
+
+<script>
+    //724. Find Pivot Index
+    var pivotIndex = function(nums) {
+        var sum = 0;
+        for (var j = 0; j < nums.length; j++) {
+            sum += nums[j];
+        }
+        var left = 0;
+        for (var i = 0; i < nums.length; i++) {
+            if (i > 0) {
+                left += nums[i - 1];
+            }
+            if (sum - left - nums[i] === left) {
+                return i;
+            }
+        }
+        return -1;
+    }
+</script>
+
+<script>
+    //654. Maximum Binary Tree
+    var constructMaximumBinaryTree = function(nums) {
+        if (nums.length === 0) {
+            return [];
+        }
+        var MaxId = function(nums, begin, end) {//查找最大值下标的函数
+            let ret = begin;
+            for (let i = begin; i <= end; i++) {
+                if (nums[ret] < nums[i]) {
+                    ret = i;
+                }
+            }
+            return ret;
+        }
+        var SmallTree = function(nums, begin, end) {//主函数（递归）
+            if (begin > end) {
+                return null;
+            }
+            var maxIndex = MaxId(nums, begin, end);
+            let root = new TreeNode(nums[maxIndex]);
+            root.left = SmallTree(nums, begin, maxIndex - 1);
+            root.right = SmallTree(nums, maxIndex + 1, end);
+            return root;
+        }
+        return SmallTree(nums, 0, nums.length - 1);
+    }
+</script>
+
+<script>
+    //120. Triangle(方法一)
+    var minimumTotal = function(triangle) {
+        for (var i = triangle.length - 2; i >= 0; i--) {
+            var prev_floor = triangle[i];
+            var next_floor = triangle[i + 1];
+            for (var j = 0; j < prev_floor.length; j++) {
+                if (next_floor[j] > next_floor[j + 1]) {
+                    prev_floor[j] += next_floor[j + 1];
+                } else {
+                    prev_floor[j] += next_floor[j];
+                }
+            }
+        }
+        return triangle[0][0];
+    }
+    //方法二
+    const minimumTotal = (triangle) => {
+        const dp = new Array(triangle.length + 1).fill(0);
+        for (let i = triangle.length - 1; i >= 0; i--){
+            for (let j = 0; j < triangle[i].length; j++){
+                dp[j] = Math.min(dp[j], dp[j + 1]) + triangle[i][j];
+            }
+        }
+        return dp[0];
+    }
+</script>
+
+<script>
+    //237. Delete Node in a Linked List
+    var deleteNode = function(node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+</script>
+
+<script>
+    //203. Remove Linked List Elements
+    var removeElements = function(head, val) {
+        if (!head) {
+            return null;
+        }
+        var p1 = head;
+        while (p1.next) {
+            if (p1.next.val === val) {
+                p1.next = p1.next.next;
+            } else {
+                p1 = p1.next;
+            }
+        }
+        return head.val === val ? head.next : head;
+    }
+</script>
+
+<script>
+    //21. Merge Two Sorted Lists
+    var mergeTwoLists = function(l1, l2) {
+        if (l1 === null || l2 === null) {
+            return l1 === null ? l2 : l1;
+        }
+        var head = { val : -1, next : null };
+        var crt = head;
+        while (l1 && l2) {
+            if (l1.val < l2.val) {
+                crt.next = l1;
+                l1 = l1.next;
+            } else {
+                crt.next = l2;
+                l2 = l2.next;
+            }
+            crt = crt.next;
+        }
+        if (l1) {
+            crt.next = l1;
+        } else if (l2) {
+            crt.next = l2;
+        }
+        return head.next;
+    }
+</script>
+
+<script>
+    //20. Valid Parentheses
+    var isValid = function(s) {
+        if (s.length % 2 !== 0) {
+            return false;
+        }
+        var stack = [];
+        var left = ["(","[","{"];
+        var right = [")","]","}"];
+        for (var i = 0; i < s.length; i++) {
+            if (left.includes(s[i])) {
+                stack.push(s[i]);
+            }
+            if (right.includes(s[i])) {
+                if (right.indexOf(s[i]) === left.indexOf(stack[stack.length - 1])) {
+                    stack.pop()
+                } else {
+                    return false;
+                }
+            }
+        }
+        if (stack.length === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
+<script>
+    //537. Complex Number Multiplication
+    var complexNumberMultiply = function(a, b) {
+        var A = +a.split("+")[0];
+        var B = parseInt(a.split("+")[1]);
+        var C = +b.split("+")[0];
+        var D = parseInt(b.split("+")[1]);
+        return "" + (A * C - B * D) + "+" + (A * D + B * C) + "i";
+    }
+</script>
+
+<script>
+    //14. Longest Common Prefix
+    var longestCommonPrefix = function(strs) {
+        if (strs.length === 0) {
+            return "";
+        }
+        var text = strs[0];
+        var i = 1;
+        while (i < strs.length) {
+            while (strs[i].indexOf(text) !== 0) {
+                text = text.slice(0, text.length - 1);
+            }
+            i++
+        }
+        return text;
+    }
+</script>
+
+<script>
+    //108. Convert Sorted Array to Binary Search Tree(迭代做法)
+    var sortedArrayToBST = function(nums) {
+        if (nums.length === 0) {
+            return null;
+        }
+        var root = {
+            val: nums[Math.floor(nums.length / 2)],
+            left: null,
+            right: null
+        }
+        var mid = Math.floor(nums.length / 2);
+        root.left = sortedArrayToBST(nums.slice(0, mid));
+        root.right = sortedArrayToBST(nums.slice(mid + 1));
+        return root;
+    }
+    //使用helper函数
+    var sortedArrayToBST = function(nums) {
+        function helper(ary, start, end) {
+            if (start > end) {
+                return null;
+            }
+            var mid = Math.floor((start + end) / 2);
+            var node = {
+                var: ary[mid],
+                left: null,
+                right: null,
+            }
+            node.left = helper(ary, start, mid - 1);
+            node.right = helper(ary, mid + 1, end);
+            return node;
+        }
+        return helper(nums, 0, nums.length - 1);
+    }
+</script>
+
+<script>
+    //162. Find Peak Element（笨办法）
+    var findPeakElement = function(nums) {
+        if (nums.length === 0) {
+            return null;
+        }
+        if (nums.length === 1) {
+            return 0;
+        }
+        if (nums.length === 2) {
+            return nums[0] > nums[1] ? 0 : 1;
+        }
+        var result = [];
+        if (nums[0] > nums[1]) {
+            result.push(nums[0]);
+        }
+        if (nums[nums.length - 1] > nums[nums.length - 2]) {
+            result.push(nums[nums.length - 1]);
+        }
+        for (var i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[i - 1] && nums[i] > nums[i + 1]) {
+                result.push(nums[i]);
+            }
+        }
+        return nums.indexOf(Math.max(...result));
+    }
+    //二分法
+    var findPeakElement = function(nums) {
+        var start = 0;
+        var end = nums.length - 1;
+        while (start < end) {
+            var mid = Math.floor((start + end) / 2);
+            if (nums[mid] < nums[mid + 1]) {
+                start = mid + 1;
+            } else {
+                end = mid;
+            }
+        }
+        return start;
+    }
+</script>
+
+<script>
+    //121. Best Time to Buy and Sell Stock
+    var maxProfit = function(prices) {
+        var buy = 0;
+        var sell = 1;
+        var max = 0;
+        while (sell < prices.length) {
+            var profit = prices[sell] - prices[buy];
+            if (profit < 0) {
+                buy = sell;
+            } else if (profit > max) {
+                max = profit;
+            }
+            sell++
+        }
+        return max;
+    }
+</script>
+
+<script>
+    //290. Word Pattern(hash法)
+    var wordPattern = function(pattern, str) {
+        var words = str.split(" ");
+        if (pattern.length !== words.length) {
+            return false;
+        }
+        var hash = {};
+        for (var i = 0; i < words.length; i++) {
+            if (hash[pattern[i]]) {
+                if (hash[pattern[i]] !== words[i]) {
+                    return false;
+                }
+            } else {
+                if (Object.values(hash).indexOf(words[i]) !== -1) {
+                    return false;
+                } else {
+                    hash[pattern[i]] = words[i];
+                }
+            }
+        }
+        return true;
+    }
+</script>
+
+<script>
+    //205. Isomorphic Strings(hash法)
+    var isIsomorphic = function(s, t) {
+        if (s.length !== t.length) {
+            return false;
+        }
+        var hash = {};
+        for (var i = 0; i < t.length; i++) {
+            if (hash[s[i]]) {
+                if (hash[s[i]] !== t[i]) {
+                    return false;
+                }
+            } else {
+                if (Object.values(hash).indexOf(t[i]) !== -1) {
+                    return false;
+                } else {
+                    hash[s[i]] = t[i];
+                }
+            }
+        }
+        return true;
+    }
+</script>
+
+<script>
+    //349. Intersection of Two Arrays(方法1，if)
+    var intersection = function(nums1, nums2) {
+        if (nums1 === null || nums2 === null) {
+            return null;
+        }
+        var result = [];
+        if (nums1.length >= nums2.length) {
+            for (var i = 0; i < nums1.length; i++) {
+                if (nums1.includes(nums2[i])) {
+                    if (!result.includes(nums2[i])) {
+                        result.push(nums2[i]);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        } else {
+            for (var j = 0; j < nums2.length; j++) {
+                if (nums2.includes(nums1[j])) {
+                    if (!result.includes(nums1[j])) {
+                        result.push(nums1[j]);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    //方法2
+    var intersection = function(nums1, nums2) {
+        var result = []
+        for (var i = 0; i < nums1.length; i++) {
+            var item = nums1[i]
+            if (nums2.includes(item) && !result.includes(item)) {
+            result.push(item)
+            }
+        }
+        return result
+        }
+</script>
+
+<script>
+    //350. Intersection of Two Arrays II
+    var intersect = function(nums1, nums2) {
+        if (nums1 === null || nums2 === null) {
+            return null;
+        }
+        nums1.sort((a, b) => a - b);
+        nums2.sort((a, b) => a - b);
+        var p1 = 0;
+        var p2 = 0;
+        var list = [];
+        while ((p1 < nums1.length) && (p2 < nums2.length)) {
+            if (nums1[p1] < nums2[p2]) {
+                p1++;
+            } else if (nums1[p1] === nums2[p2]) {
+                list.push(nums1[p1]);
+                p1++;
+                p2++;
+            } else {
+                p2++
+            }
+        }
+        return list;
+    }
+</script>
+
+<script>
+    //506. Relative Ranks(hash法)
+    var findRelativeRanks = function(nums) {
+        if (nums.length === 0) {
+            return null;
+        }
+        var sort = nums.slice().sort((a, b) => b - a);
+        var map = {};
+        for (var i = 0; i < sort.length; i++) {
+            if (i === 0) {
+                map[sort[i]] = "Gold Medal";
+            } else if (i === 1) {
+                map[sort[i]] = "Silver Medal";
+            } else if (i === 2) {
+                map[sort[i]] = "Bronze Medal";
+            } else {
+                map[sort[i]] = i + 1 + "";
+            }
+        }
+        var result = [];
+        for (var j = 0; j < nums.length; j++) {
+            result.push(map[nums[j]]);
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //151. Reverse Words in a String(注意边界条件)
+    var reverseWords = function(str) {
+        return str.split(" ").reverse().filter(function(v){return v}).join(" ");
+    }
+</script>
+
+<script>
+    //594. Longest Harmonious Subsequence
+    var findLHS = function(nums) {
+        if (nums.length === 0) {
+            return 0;
+        }
+        var sort = nums.sort((a, b) => a - b);
+        var start = 0;
+        var next = 0;
+        var result = 0;
+        for (var i = 0; i < sort.length; i++) {
+            if (sort[i] - sort[start] > 1) {
+                start = next++;
+            } else if (sort[i] - sort[start] === 1) {
+                result = Math.max(i - start + 1, result);
+            } else {
+                next++;
+            }
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //448. Find All Numbers Disappeared in an Array
+    var findDisappearedNumbers = function(nums) {
+        var result = [];
+        for (var i = 0; i < nums.length; i++) {
+            var val = Math.abs(nums[i]) - 1;
+            if (nums[val] > 0) {
+                nums[val] = -nums[val];
+            }
+        }
+        for (var i = 0; i < nums.length; i++) {
+            if (nums[i] > 0) {
+                result.push(i + 1);
+            }
+        }
+        return result;
+    }
+</script>
+
+<script>
+    //61. Rotate List
+    var rotateRight = function(head, k) {
+        if (!head || k === 0) {
+            return head;
+        }
+        var n = 1;
+        var p = head;
+        while(p.next) {//得到链表长度
+            p = p.next;
+            n++
+        }
+        k = n - k % n;//取余，防止k大于n
+        p.next = head;//连结成环
+        for (var i = 0; i < k; i++) {//指针指到应该断开的位置
+            p = p.next;
+        }
+        //得到新的链表头并断开环
+        head = p.next;
+        p.next = null;
+        return head;
+    }
+</script>
+
+<script>
+    //725. Split Linked List in Parts
+    var splitListToParts = function(root, k) {
+        if (!root) {//空数组的特殊情况
+            return new Array(k).fill(null);
+        }
+        var len = 1;
+        var p = root;
+        while (p.next) {//先求出长度
+            p = p.next;
+            len++;
+        }
+        var parts = new Array(k).fill(null);
+        var node = root;
+        var prev = null;
+        var n = Math.floor(len / k);//平均每个链表的长度
+        var r = len % k;//多余的长度，需要加在第一个链表
+        for (var i = 0; (node !== null) && i < k; i++, r--) {
+            parts[i] = node;
+            for (var j = 0; j < n + (r > 0 ? 1 : 0); j++) {
+                prev = node;
+                node = node.next;
+            }
+            prev.next = null;
+        }
+        return parts;
+    }
+</script>
+
+<script>
+    //287. Find the Duplicate Number(类似142. Linked List Cycle II做法)
+    var findDuplicate = function(nums) {
+        if (nums.length > 1) {
+            var slow = nums[0];
+            var fast = nums[nums[0]];
+            while (slow !== fast) {
+                slow = nums[slow];
+                fast = nums[nums[fast]];
+            }
+            fast = 0;
+            while (fast !== slow) {
+                fast = nums[fast];
+                slow = nums[slow];
+            }
+            return slow;
+        }
+        return -1;
+    }
+</script>
+
+<script>
+    //142. Linked List Cycle II（同141，快慢法）快:a+b+c+b,慢a+b，快 = 2*慢，即a = c，求交点
+        var detectCycle = function(head) {
+        if (!head || !head.next) {
+            return null;
+        }
+        var p1 = head;
+        var p2 = head;
+        while (p2.next !== null && p2.next.next !== null) {
+            p1 = p1.next;
+            p2 = p2.next.next;
+            if (p1 === p2) {
+                p1 = head;
+                while (p1 !== p2) {
+                    p1 = p1.next;
+                    p2 = p2.next;
+                }
+                return p1;
+            }
+        }
+        return null;
+    }
+</script>
+
+<script>
+    //234. Palindrome Linked List(借助reverselist函数)
+    var isPalindrome = function(head) {
+        if (!head) {
+            return true;
+        }
+        var fast = head;
+        var slow = head;
+        while (fast.next !== null && fast.next.next !== null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        if (fast !== null) { // 奇数时，让左边比右边长
+            slow = slow.next;
+        }
+        slow = reverseList(slow);
+        fast = head;
+        while (slow !== null) {
+            if (fast.val !== slow.val) {
+                return false;
+            }
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return true;
+
+        function reverseList(head) {
+            if (!head || !head.next) {
+                return head;
+            }
+            var tail = head.next;
+            var newhead = reverseList(tail);
+            tail.next = head;
+            head.next = null;
+            return newhead;
+        }
+    }
+    //先把链表的值push到数组，再头尾对比
+    var isPalindrome = function(head) {
+        if (!head) {
+            return true;
+        }
+        var nodes = [];
+        while (head) {
+            nodes.push(head);
+            head = head.next;
+        }
+        var end = nodes.length - 1;
+        for (var i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            var counter = nodes[end - i];
+            if (node.val !== counter.val) {
+                return false;
+            }
+        }
+        return true;
+    }
+    //同第一种写法，把getmid写成函数
+    var isPalindrome = function(head) {
+        if (head === null) return true;
+        
+        function getMidpoint(node) {
+            let fast = node;
+            let slow = node;
+            while(fast && fast.next && fast.next.next) {
+                fast = fast.next.next;
+                slow = slow.next;
+            }
+            return slow;
+        }
+
+        function reverse(node) {
+            if (!node || !node.next) return node;
+            let prev = null;
+            while(node) { 
+                const next = node.next; 
+                node.next = prev; 
+                prev = node; 
+                node = next;
+            }
+            return prev
+        }
+        
+        const midpoint = getMidpoint(head);
+        midpoint.next = reverse(midpoint.next);
+        
+        let first = head;
+        let second = midpoint.next;
+        while(first && second) {
+            if (first.val !== second.val) return false;
+            first = first.next;
+            second = second.next;
+        }
+        return true;
+    }
+</script>
+
+<script>
+    //83. Remove Duplicates from Sorted List
+    var deleteDuplicates = function(head) {
+        if (!head || !head.next) {
+            return head;
+        }
+        var p = head;
+        while (p && p.next) {
+            if (p.val === p.next.val) {
+                p.next = p.next.next;
+            } else {
+                p = p.next;
+            }
+        }
+        return head;
+    }
+</script>
+
+<script>
+    //169. Majority Element
+    var majorityElement = function(nums) {
+        nums = nums.sort((a, b) => a - b);
+        var mid = Math.floor(nums.length / 2);
+        return nums[mid];
+    }
+    //第二种方法
+    var majorityElement = function(nums) {
+        let cur = nums[0]
+        let count = 1
+        for(let i = 1; i < nums.length; i++) {
+            if(cur == nums[i]) {
+                count++
+            } else if (count == 0) {
+                cur = nums[i]
+                count++
+            } else {
+                count--
+            }
+        }
+        return cur
+    }
+</script>
+
+<script>
+    //88. Merge Sorted Array
+    //直观思路显然是双指针i, j同时扫描A, B，选min(A[i], B[j])作为下一个元素插入。
+    //但是只能利用A后面的空间来插入，这样就很不方便了。
+    //反向思路，merge后的数组一共有m+n个数。i, j从A, B尾部扫描，选max(A[i], B[j])插入从m+n起的尾部。
+    //这样也可以防止插入到A原来数字的范围内时，overwrite掉A原来的数。
+    var merge = function(nums1, m, nums2, n) {
+        var p1 = m - 1;
+        var p2 = n - 1;
+        var p3 = m + n - 1;
+        while (p1 >= 0 && p2 >= 0) {
+            if (nums1[p1] > nums2[p2]) {
+                nums1[p3--] = nums1[p1--];
+            } else {
+                nums1[p3--] = nums2[p2--];
+            }
+        }
+        while (p1 >= 0) {
+            nums1[p3--] = nums1[p1--];
+        }
+        while (p2 >= 0) {
+            nums1[p3--] = nums2[p2--];
+        }
+    }
+</script>
+
+<script>
+    //114. Flatten Binary Tree to Linked List方法1
+    var flatten = function(root) {
+        var now = root;
+        while (now) {
+            if (now.left) {//把当前节点的前序链表连接到当前节点的右子树
+                var pre = now.left;
+                while (pre.right) {
+                pre = pre.right;
+            }
+                pre.right = now.right;
+            //用当前节点的左子树代替它的右子树（原本的右子树已经被连接到当前节点的前序链表）
+                now.right = now.left;
+                now.left = null;
+        }
+            now = now.right;
+        }
+    }
+    //方法2（最快，原理同上）
+    var flatten = function(root) {
+        var node = root;
+        while(node) {
+            if(node.left) {
+                var next = node.left;
+                while(next.right) {
+                    next = next.right;
+                }
+                next.right = node.right;
+                node.right = node.left;
+                node.left = null;
+            } else {
+                node = node.right;
+            }
+        }
+    }
+</script>
+
+<script>
+    //628. Maximum Product of Three Numbers(数学题)
+    var maximumProduct = function(nums) {
+        nums.sort((a, b) => a - b);
+        var len = nums.length;
+        return Math.max((nums[0] * nums[1] * nums[len - 1]), (nums[len - 1] * nums[len - 2] * nums[len - 3]));
+    }
+</script>
+
+<script>
+    //102. Binary Tree Level Order Traversal(使用借助函数)
+    var levelOrder = function(root) {
+        var result = [];
+        
+        function DepthHelper(root, depth) {
+            if (!root) {
+                return;
+            }
+            result[depth] = result[depth] || [];
+            result[depth].push(root.val);
+            DepthHelper(root.left, depth + 1);
+            DepthHelper(root.right, depth + 1);
+        }
+        
+        DepthHelper(root, 0);
+        return result;
+    }
+    //使用BFS，类似于老师的做法
+    var levelOrder = function (root) {
+            var ans = [];
+            if (!root) {
+                return ans;
+            }
+            var nodes = [root];
+            while (nodes.length > 0) {
+                var len = nodes.length;
+                var ans0 = [];
+                for (var i = 0; i < len; i++) {
+                    ans0.push(nodes[i].val);
+                    if (nodes[i].left) {
+                        nodes.push(nodes[i].left);
+                    }
+                    if (nodes[i].right) {
+                        nodes.push(nodes[i].right);
+                    }
+                }
+                ans.push(ans0);
+                nodes.splice(0, len);
+            }
+            return ans;
+        }
+</script>
+
+<script>
+    //107. Binary Tree Level Order Traversal II（将上一题的result reverse即可）
+    var levelOrderBottom = function (root) {
+            var result = [];
+
+            function DepthHelper(root, depth) {
+                if (!root) {
+                    return;
+                }
+                result[depth] = result[depth] || [];
+                result[depth].push(root.val);
+                DepthHelper(root.left, depth + 1);
+                DepthHelper(root.right, depth + 1);
+            }
+
+            DepthHelper(root, 0);
+            return result.reverse();
+        }
+</script>
+
+<script>
+    //637. Average of Levels in Binary Tree(在按层遍历的基础上，使用reduce和map函数)
+    var averageOfLevels = function (root) {
+            var result = [];
+            var nodes = [root];
+            while (nodes.length > 0) {
+                var len = nodes.length;
+                var sub = [];
+                for (var i = 0; i < len; i++) {
+                    sub.push(nodes[i].val);
+                    if (nodes[i].left) {
+                        nodes.push(nodes[i].left);
+                    }
+                    if (nodes[i].right) {
+                        nodes.push(nodes[i].right);
+                    }
+                }
+                result.push(sub);
+                nodes.splice(0, len);
+            }
+            return result.map(item => item.reduce((a, b) => a + b) / item.length);
+        }
+</script>
+
+<script>
+    //617. Merge Two Binary Trees
+    var mergeTrees = function (t1, t2) {
+            if (!t1) {
+                return t2;
+            }
+            if (!t2) {
+                return t1;
+            }
+            var tree = new TreeNode;
+            tree.val = (t1.val === null ? 0 : t1.val) + (t2.val === null ? 0 : t2.val);
+            tree.left = mergeTrees(t1 == null ? null : t1.left, t2 == null ? null : t2.left);
+            tree.right = mergeTrees(t1 == null ? null : t1.right, t2 == null ? null : t2.right);
+
+            return tree;
+        };
+    //另一种写法
+    var mergeTrees = function (t1, t2) {
+            if (t1 == null) return t2;
+            if (t2 == null) return t1;
+            t1.val += t2.val;
+            t1.left = mergeTrees(t1.left, t2.left);
+            t1.right = mergeTrees(t1.right, t2.right);
+            return t1;
+        };
+</script>
+
+<script>
+    //653. Two Sum IV - Input is a BST(笨办法，根据BST的特性，先中序遍历成数组，再用二分查找)
+    var findTarget = function (root, k) {
+            function inorder(root) {
+                var result = [];
+                var helper = function (node, result) {
+                    if (!node) {
+                        return;
+                    }
+                    helper(node.left, result);
+                    result.push(node.val);
+                    helper(node.right, result);
+                }
+                helper(root, result);
+                return result;
+            }
+            var res = inorder(root);
+            var left = 0;
+            var right = res.length - 1;
+            while (left < right) {
+                if (res[left] + res[right] === k) {
+                    return true;
+                } else if (res[left] + res[right] < k) {
+                    left++
+                } else {
+                    right--
+                }
+            }
+            return false;
+        }
+</script>
+
+<script>
+    //563. Binary Tree Tilt(利用后序遍历)
+    var findTilt = function (root) {
+            var result = 0;
+            function helper(root) {
+                if (!root) {
+                    return 0;
+                }
+                let left = helper(root.left);
+                let right = helper(root.right);
+                result += Math.abs(left - right);
+                return root.val + left + right;
+            }
+            helper(root);
+            return result;
+        }
+</script>
+
+<script>
+    //669. Trim a Binary Search Tree(根据二叉搜索树的特性，使用递归)
+    var trimBST = function (root, L, R) {
+            if (!root) {
+                return null;
+            }
+            if (root.val < L) {
+                return trimBST(root.right, L, R);
+            }
+            if (root.val > R) {
+                return trimBST(root.left, L, R);
+            } else {
+                root.left = trimBST(root.left, L, R);
+                root.right = trimBST(root.right, L, R);
+            }
+            return root;
+        }
+</script>
+
+<script>
+    //106. Construct Binary Tree from Inorder and Postorder Traversal
+    var buildTree = function (inorder, postorder) {
+            if (inorder.length === 0) {
+                return null;
+            }
+            var rootVal = postorder.pop();
+            var root = new TreeNode(rootVal);
+            var rootPos = inorder.indexOf(rootVal);
+
+            var leftInOrder = inorder.slice(0, rootPos);
+            var leftPostOrder = postorder.slice(0, rootPos);
+
+            var rightInOrder = inorder.slice(rootPos + 1);
+            var rightPostOrder = postorder.slice(rootPos);//因为此时postorder已经把rootval给pop出来了
+
+            root.left = buildTree(leftInOrder, leftPostOrder);
+            root.right = buildTree(rightInOrder, rightPostOrder);
+
+            return root;
+
+        }
+</script>
+
+<script>
+    //105. Construct Binary Tree from Preorder and Inorder Traversal
+    var buildTree = function (preorder, inorder) {
+            if (preorder.length === 0) {
+                return null;
+            }
+            var rootVal = preorder.shift();
+            var root = new TreeNode(rootVal);
+            var rootPos = inorder.indexOf(rootVal);
+
+            var leftPreOrder = preorder.slice(0, rootPos);
+            var leftInOrder = inorder.slice(0, rootPos);
+
+            var rightPreOrder = preorder.slice(rootPos);
+            var rightInOrder = inorder.slice(rootPos + 1);
+
+            root.left = buildTree(leftPreOrder, leftInOrder);
+            root.right = buildTree(rightPreOrder, rightInOrder);
+            return root;
+        }
+</script>
+
+<script>
+    //515. Find Largest Value in Each Tree Row(先按层遍历，再用map)
+    var largestValues = function (root) {
+            var result = [];
+            if (!root) {
+                return result;
+            }
+            var nodes = [root];
+            while (nodes.length) {
+                var len = nodes.length;
+                var ans = [];
+                for (var i = 0; i < len; i++) {
+                    ans.push(nodes[i].val);
+                    if (nodes[i].left) {
+                        nodes.push(nodes[i].left);
+                    }
+                    if (nodes[i].right) {
+                        nodes.push(nodes[i].right);
+                    }
+                }
+                result.push(ans);
+                nodes.splice(0, len);
+            }
+            return result.map(item => Math.max(...item));
+        }
+</script>
+
+<script>
+    //513. Find Bottom Left Tree Value（先按层遍历，在拿出最后一行的第一项）
+    var findBottomLeftValue = function (root) {
+            var result = [];
+            var nodes = [root];
+            while (nodes.length) {
+                var len = nodes.length;
+                var ans = [];
+                for (var i = 0; i < len; i++) {
+                    ans.push(nodes[i].val);
+                    if (nodes[i].left) {
+                        nodes.push(nodes[i].left);
+                    }
+                    if (nodes[i].right) {
+                        nodes.push(nodes[i].right);
+                    }
+                }
+                result.push(ans);
+                nodes.splice(0, len);
+            }
+            var lastRow = result.pop();
+            return lastRow[0];
+        }
+</script>
+
+<script>
+    //671. Second Minimum Node In a Binary Tree（递归）
+    var findSecondMinimumValue = function (root) {
+            if (!root) {
+                return -1;
+            }
+            if (!root.left && !root.right) {
+                return -1;
+            }
+            var left = root.left.val;
+            var right = root.right.val;
+            if (root.left.val === root.val) {
+                left = findSecondMinimumValue(root.left);
+            }
+            if (root.right.val === root.val) {
+                right = findSecondMinimumValue(root.right);
+            }
+            if (left !== -1 && right !== -1) {
+                return Math.min(left, right);
+            } else if (left === -1) {
+                return right;
+            } else {
+                return left;
+            }
+        }
+</script>
+
+<script>
+    //404. Sum of Left Leaves(递归)
+    var sumOfLeftLeaves = function (root) {
+            if (!root) {
+                return 0;
+            }
+            var result = 0;
+            if (root.left) {
+                if (root.left.left === null && root.left.right === null) {
+                    result += root.left.val;
+                } else {
+                    result += sumOfLeftLeaves(root.left);
+                }
+            }
+
+            result += sumOfLeftLeaves(root.right);
+            return result;
+        }
+    //更简洁的写法
+    var sumOfLeftLeaves = function (root) {
+            var val = 0;
+            if (!root) return 0;
+            if (root.left && !root.left.left && !root.left.right) val += root.left.val;
+            return val + sumOfLeftLeaves(root.left) + sumOfLeftLeaves(root.right);
+        };
+</script>
+
+<script>
+    //103. Binary Tree Zigzag Level Order Traversal(using Odd Even row)
+    var zigzagLevelOrder = function (root) {
+            var result = [];
+            if (!root) {
+                return result;
+            }
+            var nodes = [root];
+            var row = 0;
+            while (nodes.length) {
+                var len = nodes.length;
+                var ans = [];
+                for (var i = 0; i < len; i++) {
+                    if (nodes.length) {
+                        var leftElem = nodes.shift();
+                        if (leftElem.left) {
+                            nodes.push(leftElem.left);
+                        }
+                        if (leftElem.right) {
+                            nodes.push(leftElem.right);
+                        }
+                        if (row % 2 === 0) {
+                            ans.push(leftElem.val);
+                        } else {
+                            ans.unshift(leftElem.val);
+                        }
+                    }
+                }
+                result.push(ans);
+                row++
+
+            }
+            return result;
+
+        };
+        //在按层遍历的结果的基础上，使用map
+        var zigzagLevelOrder = function (root) {
+                if (!root) return []
+                let levels = [], q = [root]
+                while (q.length > 0) {
+                    let len = q.length,
+                        level = []
+                    for (let i = 0; i < len; i++) {
+                        let curr = q.shift()
+                        level.push(curr.val)
+                        if (curr.left) q.push(curr.left)
+                        if (curr.right) q.push(curr.right)
+                    }
+                    levels.push(level)
+                }
+                return levels.map((l, i) => {
+                    if (i % 2 !== 0) return l.reverse()
+                    else return l
+                })
+            }
+</script>
+
+<script>
+    //17. Letter Combinations of a Phone Number
+    var letterCombinations = function (digits) {
+            var numbers = {
+                2: ["a", "b", "c"],
+                3: ["d", "e", "f"],
+                4: ["g", "h", "i"],
+                5: ["j", "k", "l"],
+                6: ["m", "n", "o"],
+                7: ["p", "q", "r", "s"],
+                8: ["t", "u", "v"],
+                9: ["w", "x", "y", "z"],
+            }
+            var result = [];
+            for (var i = 0; i < digits.length; i++) {
+                if (i === 0) {
+                    result = [""];
+                }
+                var currentNumber = digits[i];
+                var currentLetter = numbers[currentNumber];
+                var arr = [];
+                for (var j = 0; j < currentLetter.length; j++) {
+                    var arr1 = [];
+                    for (var k = 0; k < result.length; k++) {
+                        arr1.push(result[k] + currentLetter[j]);
+                    }
+                    arr = arr.concat(arr1);
+                }
+                result = arr;
+            }
+            return result;
+        }
+        //精简写法
+        var letterCombinations = function (digits) {
+                if (!digits) return []
+                var map = { 2: "abc", 3: "def", 4: "ghi", 5: "jkl", 6: "mno",
+                 7: "pqrs", 8: "tuv", 9: "wxyz" }
+                var res = [""]
+                var arr = digits.split("")
+                for (var digit of digits) {
+                    var a = map[digit]
+                    var newres = []
+                    for (var c of a) {
+                        for (var str of res) {
+                            newres.push(str + c)
+                        }
+                    }
+
+                    res = newres
+                }
+                return res
+            };
+</script>
+
+<script>
+    //112. Path Sum(递归)
+    var hasPathSum = function(root, sum) {
+        if (!root) {
+            return false;
+        }
+        if (!root.left && !root.right) {
+            return root.val === sum;
+        } else {
+            return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+        }
+    }
+</script>
+
+<script>
+    //93. Restore IP Addresses
+    var restoreIpAddresses = function (s) {
+        let res = [];
+        helper(res, [], s);
+        return res;
+    };
+
+    let helper = (res, list, s) => {
+        // n 为字符串被分割的段数
+        if (list.length == 4) {
+            if (s.length == 0) {
+                res.push(list.join("."));
+            }
+            return;
+        }
+        // 取长度为1,2,3
+        for (let k = 1; k < 4; ++k) {
+            if (s.length < k) break;
+            // 取此段
+            let val = parseInt(s.substring(0, k));
+            // 校验此段是否合法ip的一部分， >255 或者前面有0, 如05，为不合法；
+            if (val > 255 || k != (val+"").length) {
+                continue;
+            }
+            list.push(val);
+            helper(res, list, s.substring(k));
+            list.pop();
+        }
+    }
+</script>
+
+<script>
+    //40. Combination Sum II
+    var combinationSum2 = function(candidates, target) {
+        candidates.sort(function (a, b) {
+            return a - b;
+        });
+        
+        var result = [];
+        combination(candidates, target, 0, []);
+        return result;
+        
+        
+        function combination(candidates, target, start, res) {
+            if (target < 0) {
+                return;
+            }
+            else if (target === 0) {
+                result.push(res.slice());
+                return;
+            }
+            else {
+                for (var i = start; i < candidates.length; i++) {
+                    if (i > start && candidates[i] === candidates[i - 1]) {
+                        continue;
+                    }
+                    
+                    res.push(candidates[i]);
+                    combination(candidates, target - candidates[i], i + 1, res);
+                    res.pop();
+                }
+            }
+        }
+    }
+</script>
+
+<script>
+    //78. Subsets(老师的方法)
+    var subsets = function(nums) {
+    if (nums.length === 0) {
+        return [[]];
+    }
+    const result = [[]];
+    function helper(nums,parts=[]) {
+        for (var i = 0; i < nums.length; i++) {
+            parts.push(nums[i]);
+            result.push(parts.slice());
+            helper(nums.slice(i + 1), parts)
+            parts.pop();
+        }
+    }
+    helper(nums,[]);
+    return result;
+};
+</script>
+
+<script>
+    //153. Find Minimum in Rotated Sorted Array(赖皮法)
+    var findMin = function(nums) {
+        nums.sort(function(a, b) {
+            return a - b;
+        })
+        return nums[0];
+    }
+    //for遍历
+    var findMin = function(nums) {
+        let min = nums[0];
+        for (let i = 1; i < nums.length; i++) {
+            if (nums[i] < min) {
+                min = nums[i];
+            }
+        }
+        return min;
+    }
+    //二分查找
+    var findMin = function(nums) {
+        var start = 0;
+        var end = nums.length-1;
+        
+        while (start < end) {
+            if (nums[start] < nums[end]) {
+                return nums[start];
+            }
+            
+            var mid = Math.floor((start + end)/2);
+            
+            if (nums[mid] >= nums[start]) {
+                // we know that the rotation happened in second half
+                start = mid + 1;
+            } else {
+                end = mid;
+            }
+        }
+        
+        return nums[start];
+    }
+</script>
+
+<script>
+    //154. Find Minimum in Rotated Sorted Array II（同上,在start和mid相等时，把start加1，继续）
+    var findMin = function(nums) {
+        var start = 0;
+        var end = nums.length - 1;
+        while (start < end) {
+            if (nums[start] < nums[end]) {
+                return nums[start];
+            }
+            var mid = Math.floor((start + end) / 2);
+            if (nums[mid] > nums[start]) {
+                start = mid;
+            } else if (nums[mid] < nums[start]) {
+                end = mid;
+            } else {
+                start++
+            }
+        }
+        return nums[start];
+    }
+</script>
+
+<script>
+    //33. Search in Rotated Sorted Array(分类讨论)
+    var search = function(nums, target) {
+        if (nums.length === 0) {
+            return -1;
+        }
+        if (nums.length === 1) {
+            return nums[0] === target ? 0 : -1;
+        }
+        var start = 0;
+        var end = nums.length - 1;
+        var mid;
+        while(start < end - 1) {
+            var mid = Math.floor((start + end) / 2);
+            if (nums[mid] === target) {
+                return mid;
+            }
+            if (nums[mid] > nums[start]) {
+                if (nums[start] <= target && target <= nums[mid]) {
+                    end = mid;
+                } else {
+                    start = mid;
+                }
+            } else {
+                if (nums[mid] <= target && target <= nums[end]) {
+                    start = mid;
+                } else {
+                    end = mid;
+                }
+            }
+        }
+        if (nums[start] === target) {
+            return start;
+        }
+        if (nums[end] === target) {
+            return end;
+        }
+        return -1;
+    }
+</script>
+
+<script>
+    //81. Search in Rotated Sorted Array II(同154题)
+    var search = function(nums, target) {
+        if (nums.length === 0) {
+                return false;
+            }
+            if (nums.length === 1) {
+                return nums[0] === target ? true : false;
+            }
+            var start = 0;
+            var end = nums.length - 1;
+            var mid;
+            while(start < end - 1) {
+                var mid = Math.floor((start + end) / 2);
+                if (nums[mid] === target) {
+                    return true;
+                }
+                if (nums[mid] > nums[start]) {
+                    if (nums[start] <= target && target <= nums[mid]) {
+                        end = mid;
+                    } else {
+                        start = mid;
+                    }
+                } else if (nums[mid] < nums[start]){
+                    if (nums[mid] <= target && target <= nums[end]) {
+                        start = mid;
+                    } else {
+                        end = mid;
+                    }
+                } else {
+                    start++
+                }
+            }
+            if (nums[start] === target) {
+                return true;
+            }
+            if (nums[end] === target) {
+                return true;
+            }
+            return false;
+    }
+</script>
+
+<script>
+    //173. Binary Search Tree Iterator(利用迭代器)
+    var BSTIterator = function(root) {
+        function * InOrderTraversal(root) {
+            if (root) {
+                yield * InOrderTraversal(root.left);
+                yield  root.val;
+                yield * InOrderTraversal(root.right);
+            }
+        }
+        this.generator = InOrderTraversal(root);
+        this.curr = this.generator.next();
+    };
+
+
+    /**
+    * @this BSTIterator
+    * @returns {boolean} - whether we have a next smallest number
+    */
+    BSTIterator.prototype.hasNext = function() {
+        return !this.curr.done
+    };
+
+    /**
+    * @this BSTIterator
+    * @returns {number} - the next smallest number
+    */
+    BSTIterator.prototype.next = function() {
+        
+        var result = this.curr.value;
+        this.curr = this.generator.next()
+        return result;
+    };
+
+    /**
+    * Your BSTIterator will be called like this:
+    * var i = new BSTIterator(root), a = [];
+    * while (i.hasNext()) a.push(i.next());
+    */
+</script>
+
+<script>
+    //547. Friend Circles(使用并查集)
+    class UnionSet {
+        constructor(size) {
+        this.set = new Array(size).fill(-1);
+        }
+        find(x) {
+            if (this.set[x] < 0) {
+                return x;
+            } else {
+                return this.find(this.set[x]);
+            }
+        }
+        findPro(x) {//找到x所述的根节点，并把x指向根节点------路径压缩
+            if (this.set[x] < 0) {
+                return x;
+            } else {
+                return this.set[x] = this.find(this.set[x]);
+            }
+        }
+        same(x, y) {
+            return this.find(x) === this.find(y);
+        }
+        unionByDepth(x, y) {
+            var rootx = this.find(x);
+            var rooty = this.find(y);
+            var depthx = -this.set[rootx];
+            var depthy = -this.set[rooty];
+            if (rootx !== rooty) {
+                if (depthx > depthy) {
+                    this.set[rooty] = rootx;
+
+                } else if (depthx < depthy) {
+                     this.set[rootx] = rooty;
+                } else {
+                    this.set[rootx] = rooty;
+                    this.set[rooty]--;
+                }
+            }
+            return this;
+        }
+        unionBySize(x, y) {
+            var rootx = this.findPro(x);
+            var rooty = this.findPro(y);
+            var sizex = -this.set[rootx];
+            var sizey = -this.set[rooty];
+            if (sizex < sizey) {
+                this.set[rootx] = rooty;
+                this.set[rooty] = -(sizex + sizey);
+            } else {
+                this.set[rooty] = rootx;
+                this.set[rootx] = -(sizex + sizey);
+            }
+        }
+        sets() {
+            return this.set.filter(it => it < 0).length;
+        }
+    }
+
+var findCircleNum = function(M) {
+    if (M.length === 0) {
+        return 0;
+    }
+    var friends = new UnionSet(M.length);
+    for (var i = 0; i < M.length; i++) {
+        for (var j = 0; j < M[0].length; j++) {
+            if (M[i][j] === 1) {
+                friends.unionBySize(i, j);
+            }
+        }
+    }
+    return friends.sets();
+};
+</script>
+
+<script>
+    //62. Unique Paths(使用dp)
+    //dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+    var uniquePaths = function(m, n) {
+        if (m === 1 || n === 1) {
+            return 1;
+        }
+        var dp = new Array(n).fill(1);
+        for (var i = 1; i < m; i++) {
+            for (var j = 1; j < n; j++) {
+                dp[j] += dp[j - 1];
+            }
+        }
+        return dp[n - 1];
+    }
+    //第二种方法
+    var uniquePaths = function(m, n) {
+        //初始化格子
+        let result = new Array(m);
+        for (let i=0; i<m; i++){
+            result[i] = new Array(n);
+        }
+        result[0][0] = 1;
+        //设置每行的初始化标记
+        for (let i=1;i<m;i++){
+            result[i][0] = 1;
+        }
+        //设置每列的初始化标记
+        for (let i=1;i<n;i++){
+            result[0][i] = 1;
+        }
+        //设置中间区域的决策
+        for (let i=1;i<m; i++){
+            for (let j=1; j<n; j++){
+                result[i][j] = result[i-1][j] + result[i][j-1];
+            }
+        }
+        let result_num = result[m-1][n-1];
+        console.log('result_num 的递归结果 = ', result_num);
+        return result_num;
+    }
+</script>
+
+<script>
+    //122. Best Time to Buy and Sell Stock II
+    var maxProfit = function(prices) {
+        var profit = 0;
+        for (var i = 0; i < prices.length; i++) {
+            if (prices[i] - prices[i - 1] > 0) {
+                profit += prices[i] - prices[i - 1];
+            }
+        }
+        return profit;
+    }
+</script>
+
+<script>
+    //414. Third Maximum Number(笨办法，使用set)
+    var thirdMax = function(nums) {
+        var nums = nums.sort((a, b) => b - a);
+        var set = new Set(nums);
+        var ary = Array.from(set);
+        return (ary.length >= 3) ? ary[2] : ary[0];
+    }
+    //第二种方法
+    var thirdMax = function(nums) {//max1 === undefined不要写成!max1，因为0会误导
+        let max1, max2, max3;
+        for (const n of nums) {
+            if (max1 === undefined || max1 < n) {
+                max3 = max2;
+                max2 = max1;
+                max1 = n;
+            } else if (max1 > n) {
+                if (max2 === undefined || max2 < n) {
+                    max3 = max2;
+                    max2 = n;
+                } else if (max2 > n) {
+                    if (max3 ===undefined || max3 < n) {
+                        max3 = n;
+                    }
+                }
+            }
+        }
+        return max3 === undefined ? max1 : max3;
+    }
+</script>
